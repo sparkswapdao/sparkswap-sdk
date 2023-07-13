@@ -11,7 +11,9 @@
   "repository": "https://github.com/empm0ney/pulsex-sdk.git",
   "keywords": [
     "uniswap",
-    "ethereum"
+    "pulsex",
+    "ethereum",
+    "pulsechain"
   ],
   "module": "dist/v2-sdk.esm.js",
   "scripts": {
