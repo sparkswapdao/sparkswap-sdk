@@ -26,7 +26,7 @@
   "dependencies": {
     "@ethersproject/address": "^5.0.0",
     "@ethersproject/solidity": "^5.0.0",
-    "@pulsex/sdk-core": "^4.0.2",
+    "@pulsex/sdk-core": "^1.0.2",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
   },
