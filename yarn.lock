@@ -1305,7 +1305,7 @@
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/semver-v6/-/semver-v6-6.3.3.tgz#ea6d23ade78a325f7a52750aab1526b02b628c29"
   integrity sha512-3Yc1fUTs69MG/uZbJlLSI3JISMn2UV2rg+1D/vROUqZyh3l6iYHCs7GMp+M40ZD7yOdDbYjJcU1oTJhrc+dGKg==
 
-"@pulsex/sdk-core@^4.0.2":
+"@pulsex/sdk-core@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@pulsex/sdk-core/-/sdk-core-1.0.2.tgz#1053c8d70c4469eafca8f79616072789aa46a1fa"
   integrity sha512-MU+s8Wgh10NQOksZ2+XDB2CfS9Xuq7KxhK4O8FPIRbP/LMBggYr/dbZMlLxRNmCA3qfkQUZatB57QItbTr1q8A==
