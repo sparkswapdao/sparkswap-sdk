@@ -802,6 +802,7 @@ Object.keys(JSBI).forEach(function (k) {
     }
   });
 });
+exports.ETHER = ETHER;
 exports.FACTORY_ADDRESS = FACTORY_ADDRESS;
 exports.INIT_CODE_HASH = INIT_CODE_HASH;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;
@@ -811,6 +812,7 @@ exports.Pair = Pair;
 exports.Route = Route;
 exports.Router = Router;
 exports.Trade = Trade;
+exports.WETH = WETH;
 exports.computePairAddress = computePairAddress;
 exports.inputOutputComparator = inputOutputComparator;
 exports.tradeComparator = tradeComparator;

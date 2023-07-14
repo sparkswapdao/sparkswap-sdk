@@ -1,4 +1,4 @@
-import { Pulse, Token, CurrencyAmount, sqrt, Price, TradeType, Fraction, computePriceImpact, sortedInsert, validateAndParseAddress } from '@pulsex/sdk-core';
+import { Token, Pulse, CurrencyAmount, sqrt, Price, TradeType, Fraction, computePriceImpact, sortedInsert, validateAndParseAddress } from '@pulsex/sdk-core';
 export * from '@pulsex/sdk-core';
 import JSBI__default from 'jsbi';
 export * from 'jsbi';
@@ -781,5 +781,5 @@ var Router = /*#__PURE__*/function () {
   return Router;
 }();
 
-export { FACTORY_ADDRESS, INIT_CODE_HASH, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, Pair, Route, Router, Trade, computePairAddress, inputOutputComparator, tradeComparator };
+export { ETHER, FACTORY_ADDRESS, INIT_CODE_HASH, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, Pair, Route, Router, Trade, WETH, computePairAddress, inputOutputComparator, tradeComparator };
 //# sourceMappingURL=pulsex-sdk.esm.js.map
