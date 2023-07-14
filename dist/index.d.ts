@@ -3,3 +3,4 @@ export * from './errors';
 export * from './entities';
 export * from './router';
 export * from '@pulsex/sdk-core';
+export * from 'jsbi';

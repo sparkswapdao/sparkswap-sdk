@@ -5,7 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var sdkCore = require('@pulsex/sdk-core');
-var JSBI = _interopDefault(require('jsbi'));
+var JSBI = require('jsbi');
+var JSBI__default = _interopDefault(JSBI);
 var invariant = _interopDefault(require('tiny-invariant'));
 var solidity = require('@ethersproject/solidity');
 var address = require('@ethersproject/address');
@@ -176,13 +177,13 @@ var ETHER = /*#__PURE__*/_extends({}, /*#__PURE__*/sdkCore.Pulse.onChain(369), {
   equals: /*#__PURE__*/sdkCore.Pulse.onChain(369).equals
 });
 var INIT_CODE_HASH = '0x59fffffddd756cba9095128e53f3291a6ba38b21e3df744936e7289326555d62';
-var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
+var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI__default.BigInt(1000);
 // exports for internal consumption
-var ZERO = /*#__PURE__*/JSBI.BigInt(0);
-var ONE = /*#__PURE__*/JSBI.BigInt(1);
-var FIVE = /*#__PURE__*/JSBI.BigInt(5);
-var _997 = /*#__PURE__*/JSBI.BigInt(997);
-var _1000 = /*#__PURE__*/JSBI.BigInt(1000);
+var ZERO = /*#__PURE__*/JSBI__default.BigInt(0);
+var ONE = /*#__PURE__*/JSBI__default.BigInt(1);
+var FIVE = /*#__PURE__*/JSBI__default.BigInt(5);
+var _997 = /*#__PURE__*/JSBI__default.BigInt(997);
+var _1000 = /*#__PURE__*/JSBI__default.BigInt(1000);
 
 // see https://stackoverflow.com/a/41102306
 var CAN_SET_PROTOTYPE = ('setPrototypeOf' in Object);
@@ -270,30 +271,30 @@ var Pair = /*#__PURE__*/function () {
   };
   _proto.getOutputAmount = function getOutputAmount(inputAmount) {
     !this.involvesToken(inputAmount.currency) ?  invariant(false, 'TOKEN')  : void 0;
-    if (JSBI.equal(this.reserve0.quotient, ZERO) || JSBI.equal(this.reserve1.quotient, ZERO)) {
+    if (JSBI__default.equal(this.reserve0.quotient, ZERO) || JSBI__default.equal(this.reserve1.quotient, ZERO)) {
       throw new InsufficientReservesError();
     }
     var inputReserve = this.reserveOf(inputAmount.currency);
     var outputReserve = this.reserveOf(inputAmount.currency.equals(this.token0) ? this.token1 : this.token0);
-    var inputAmountWithFee = JSBI.multiply(inputAmount.quotient, _997);
-    var numerator = JSBI.multiply(inputAmountWithFee, outputReserve.quotient);
-    var denominator = JSBI.add(JSBI.multiply(inputReserve.quotient, _1000), inputAmountWithFee);
-    var outputAmount = sdkCore.CurrencyAmount.fromRawAmount(inputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI.divide(numerator, denominator));
-    if (JSBI.equal(outputAmount.quotient, ZERO)) {
+    var inputAmountWithFee = JSBI__default.multiply(inputAmount.quotient, _997);
+    var numerator = JSBI__default.multiply(inputAmountWithFee, outputReserve.quotient);
+    var denominator = JSBI__default.add(JSBI__default.multiply(inputReserve.quotient, _1000), inputAmountWithFee);
+    var outputAmount = sdkCore.CurrencyAmount.fromRawAmount(inputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI__default.divide(numerator, denominator));
+    if (JSBI__default.equal(outputAmount.quotient, ZERO)) {
       throw new InsufficientInputAmountError();
     }
     return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
   };
   _proto.getInputAmount = function getInputAmount(outputAmount) {
     !this.involvesToken(outputAmount.currency) ?  invariant(false, 'TOKEN')  : void 0;
-    if (JSBI.equal(this.reserve0.quotient, ZERO) || JSBI.equal(this.reserve1.quotient, ZERO) || JSBI.greaterThanOrEqual(outputAmount.quotient, this.reserveOf(outputAmount.currency).quotient)) {
+    if (JSBI__default.equal(this.reserve0.quotient, ZERO) || JSBI__default.equal(this.reserve1.quotient, ZERO) || JSBI__default.greaterThanOrEqual(outputAmount.quotient, this.reserveOf(outputAmount.currency).quotient)) {
       throw new InsufficientReservesError();
     }
     var outputReserve = this.reserveOf(outputAmount.currency);
     var inputReserve = this.reserveOf(outputAmount.currency.equals(this.token0) ? this.token1 : this.token0);
-    var numerator = JSBI.multiply(JSBI.multiply(inputReserve.quotient, outputAmount.quotient), _1000);
-    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.quotient, outputAmount.quotient), _997);
-    var inputAmount = sdkCore.CurrencyAmount.fromRawAmount(outputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI.add(JSBI.divide(numerator, denominator), ONE));
+    var numerator = JSBI__default.multiply(JSBI__default.multiply(inputReserve.quotient, outputAmount.quotient), _1000);
+    var denominator = JSBI__default.multiply(JSBI__default.subtract(outputReserve.quotient, outputAmount.quotient), _997);
+    var inputAmount = sdkCore.CurrencyAmount.fromRawAmount(outputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI__default.add(JSBI__default.divide(numerator, denominator), ONE));
     return [inputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
   };
   _proto.getLiquidityMinted = function getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB) {
@@ -302,14 +303,14 @@ var Pair = /*#__PURE__*/function () {
     ? [tokenAmountA, tokenAmountB] : [tokenAmountB, tokenAmountA];
     !(tokenAmounts[0].currency.equals(this.token0) && tokenAmounts[1].currency.equals(this.token1)) ?  invariant(false, 'TOKEN')  : void 0;
     var liquidity;
-    if (JSBI.equal(totalSupply.quotient, ZERO)) {
-      liquidity = JSBI.subtract(sdkCore.sqrt(JSBI.multiply(tokenAmounts[0].quotient, tokenAmounts[1].quotient)), MINIMUM_LIQUIDITY);
+    if (JSBI__default.equal(totalSupply.quotient, ZERO)) {
+      liquidity = JSBI__default.subtract(sdkCore.sqrt(JSBI__default.multiply(tokenAmounts[0].quotient, tokenAmounts[1].quotient)), MINIMUM_LIQUIDITY);
     } else {
-      var amount0 = JSBI.divide(JSBI.multiply(tokenAmounts[0].quotient, totalSupply.quotient), this.reserve0.quotient);
-      var amount1 = JSBI.divide(JSBI.multiply(tokenAmounts[1].quotient, totalSupply.quotient), this.reserve1.quotient);
-      liquidity = JSBI.lessThanOrEqual(amount0, amount1) ? amount0 : amount1;
+      var amount0 = JSBI__default.divide(JSBI__default.multiply(tokenAmounts[0].quotient, totalSupply.quotient), this.reserve0.quotient);
+      var amount1 = JSBI__default.divide(JSBI__default.multiply(tokenAmounts[1].quotient, totalSupply.quotient), this.reserve1.quotient);
+      liquidity = JSBI__default.lessThanOrEqual(amount0, amount1) ? amount0 : amount1;
     }
-    if (!JSBI.greaterThan(liquidity, ZERO)) {
+    if (!JSBI__default.greaterThan(liquidity, ZERO)) {
       throw new InsufficientInputAmountError();
     }
     return sdkCore.CurrencyAmount.fromRawAmount(this.liquidityToken, liquidity);
@@ -321,20 +322,20 @@ var Pair = /*#__PURE__*/function () {
     !this.involvesToken(token) ?  invariant(false, 'TOKEN')  : void 0;
     !totalSupply.currency.equals(this.liquidityToken) ?  invariant(false, 'TOTAL_SUPPLY')  : void 0;
     !liquidity.currency.equals(this.liquidityToken) ?  invariant(false, 'LIQUIDITY')  : void 0;
-    !JSBI.lessThanOrEqual(liquidity.quotient, totalSupply.quotient) ?  invariant(false, 'LIQUIDITY')  : void 0;
+    !JSBI__default.lessThanOrEqual(liquidity.quotient, totalSupply.quotient) ?  invariant(false, 'LIQUIDITY')  : void 0;
     var totalSupplyAdjusted;
     if (!feeOn) {
       totalSupplyAdjusted = totalSupply;
     } else {
       !!!kLast ?  invariant(false, 'K_LAST')  : void 0;
-      var kLastParsed = JSBI.BigInt(kLast);
-      if (!JSBI.equal(kLastParsed, ZERO)) {
-        var rootK = sdkCore.sqrt(JSBI.multiply(this.reserve0.quotient, this.reserve1.quotient));
+      var kLastParsed = JSBI__default.BigInt(kLast);
+      if (!JSBI__default.equal(kLastParsed, ZERO)) {
+        var rootK = sdkCore.sqrt(JSBI__default.multiply(this.reserve0.quotient, this.reserve1.quotient));
         var rootKLast = sdkCore.sqrt(kLastParsed);
-        if (JSBI.greaterThan(rootK, rootKLast)) {
-          var numerator = JSBI.multiply(totalSupply.quotient, JSBI.subtract(rootK, rootKLast));
-          var denominator = JSBI.add(JSBI.multiply(rootK, FIVE), rootKLast);
-          var feeLiquidity = JSBI.divide(numerator, denominator);
+        if (JSBI__default.greaterThan(rootK, rootKLast)) {
+          var numerator = JSBI__default.multiply(totalSupply.quotient, JSBI__default.subtract(rootK, rootKLast));
+          var denominator = JSBI__default.add(JSBI__default.multiply(rootK, FIVE), rootKLast);
+          var feeLiquidity = JSBI__default.divide(numerator, denominator);
           totalSupplyAdjusted = totalSupply.add(sdkCore.CurrencyAmount.fromRawAmount(this.liquidityToken, feeLiquidity));
         } else {
           totalSupplyAdjusted = totalSupply;
@@ -343,7 +344,7 @@ var Pair = /*#__PURE__*/function () {
         totalSupplyAdjusted = totalSupply;
       }
     }
-    return sdkCore.CurrencyAmount.fromRawAmount(token, JSBI.divide(JSBI.multiply(liquidity.quotient, this.reserveOf(token).quotient), totalSupplyAdjusted.quotient));
+    return sdkCore.CurrencyAmount.fromRawAmount(token, JSBI__default.divide(JSBI__default.multiply(liquidity.quotient, this.reserveOf(token).quotient), totalSupplyAdjusted.quotient));
   };
   _createClass(Pair, [{
     key: "token0Price",
@@ -790,6 +791,14 @@ Object.keys(sdkCore).forEach(function (k) {
     enumerable: true,
     get: function () {
       return sdkCore[k];
+    }
+  });
+});
+Object.keys(JSBI).forEach(function (k) {
+  if (k !== 'default') Object.defineProperty(exports, k, {
+    enumerable: true,
+    get: function () {
+      return JSBI[k];
     }
   });
 });
