@@ -1,22 +1,23 @@
-import { Token, WETH9, Price, CurrencyAmount } from '@pulsex/sdk-core'
+import { WETH } from './../constants';
+import { Token, WPLS9, Price, CurrencyAmount } from '@pulsex/sdk-core'
 import { InsufficientInputAmountError } from '../errors'
 import { computePairAddress, Pair } from './pair'
 
 describe('computePairAddress', () => {
   it('should correctly compute the pool address', () => {
-    const tokenA = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
-    const tokenB = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
+    const tokenA = new Token(369, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
+    const tokenB = new Token(369, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
     const result = computePairAddress({
       factoryAddress: '0x1111111111111111111111111111111111111111',
       tokenA,
       tokenB
     })
 
-    expect(result).toEqual('0xb50b5182D6a47EC53a469395AF44e371d7C76ed4')
+    expect(result).toEqual('0x0324AC7eDEa27ec878eE754393Fc4Bc6C7609442')
   })
   it('should give same result regardless of token order', () => {
-    const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
-    const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
+    const USDC = new Token(369, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
+    const DAI = new Token(369, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
     let tokenA = USDC
     let tokenB = DAI
     const resultA = computePairAddress({
@@ -38,20 +39,20 @@ describe('computePairAddress', () => {
 })
 
 describe('Pair', () => {
-  const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
-  const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
+  const USDC = new Token(369, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
+  const DAI = new Token(369, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
 
   describe('constructor', () => {
     it('cannot be used for tokens on different chains', () => {
       expect(
-        () => new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(WETH9[3], '100'))
+        () => new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(WPLS9[3], '100'))
       ).toThrow('CHAIN_IDS')
     })
   })
 
   describe('#getAddress', () => {
     it('returns the correct address', () => {
-      expect(Pair.getAddress(USDC, DAI)).toEqual('0xAE461cA67B15dc8dc81CE7615e0320dA1A9aB8D5')
+      expect(Pair.getAddress(USDC, DAI)).toEqual('0x9f2AA20a422433d649F5383d89C11eD15dFa0011')
     })
   })
 
@@ -126,7 +127,7 @@ describe('Pair', () => {
     })
 
     it('throws if invalid token', () => {
-      expect(() => pair.priceOf(WETH9[1])).toThrow('TOKEN')
+      expect(() => pair.priceOf(WETH[369])).toThrow('TOKEN')
     })
   })
 
@@ -143,7 +144,7 @@ describe('Pair', () => {
     it('throws if not in the pair', () => {
       expect(() =>
         new Pair(CurrencyAmount.fromRawAmount(DAI, '101'), CurrencyAmount.fromRawAmount(USDC, '100')).reserveOf(
-          WETH9[1]
+          WETH[369]
         )
       ).toThrow('TOKEN')
     })
@@ -153,10 +154,10 @@ describe('Pair', () => {
     it('returns the token0 chainId', () => {
       expect(
         new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).chainId
-      ).toEqual(1)
+      ).toEqual(369)
       expect(
         new Pair(CurrencyAmount.fromRawAmount(DAI, '100'), CurrencyAmount.fromRawAmount(USDC, '100')).chainId
-      ).toEqual(1)
+      ).toEqual(369)
     })
   })
   describe('#involvesToken', () => {
@@ -168,7 +169,7 @@ describe('Pair', () => {
     ).toEqual(true)
     expect(
       new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(
-        WETH9[1]
+        WETH[369]
       )
     ).toEqual(false)
   })

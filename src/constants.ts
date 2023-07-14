@@ -1,8 +1,13 @@
+import { Pulse, Token } from '@pulsex/sdk-core'
 import JSBI from 'jsbi'
 
-export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+export const FACTORY_ADDRESS = '0x1715a3e4a142d8b698131108995174f37aeba10d'
 
-export const INIT_CODE_HASH = '0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f'
+export const WETH = { 369: new Token(369, '0xa1077a294dde1b09bb078844df40758a5d0f9a27', 18, 'WPLS', 'Wrapped Pulse') }
+
+export const ETHER = { ...Pulse.onChain(369), wrapped: WETH[369], chainId: 369, equals: Pulse.onChain(369).equals } as Pulse
+
+export const INIT_CODE_HASH = '0x59fffffddd756cba9095128e53f3291a6ba38b21e3df744936e7289326555d62'
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
 
