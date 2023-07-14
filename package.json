@@ -2,7 +2,7 @@
   "name": "pulsex-sdk",
   "license": "MIT",
   "version": "3.2.0",
-  "description": "🛠 An SDK for building applications on top of Uniswap V2",
+  "description": "🛠 An SDK for building applications on top of PulseX",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -10,9 +10,7 @@
   ],
   "repository": "https://github.com/empm0ney/pulsex-sdk.git",
   "keywords": [
-    "uniswap",
     "pulsex",
-    "ethereum",
     "pulsechain"
   ],
   "module": "dist/pulsex-sdk.esm.js",
