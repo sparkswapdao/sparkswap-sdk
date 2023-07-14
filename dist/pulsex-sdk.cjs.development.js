@@ -785,6 +785,14 @@ var Router = /*#__PURE__*/function () {
   return Router;
 }();
 
+Object.keys(sdkCore).forEach(function (k) {
+  if (k !== 'default') Object.defineProperty(exports, k, {
+    enumerable: true,
+    get: function () {
+      return sdkCore[k];
+    }
+  });
+});
 exports.FACTORY_ADDRESS = FACTORY_ADDRESS;
 exports.INIT_CODE_HASH = INIT_CODE_HASH;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;

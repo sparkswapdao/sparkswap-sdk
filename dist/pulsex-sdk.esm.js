@@ -1,4 +1,5 @@
 import { Pulse, Token, CurrencyAmount, sqrt, Price, TradeType, Fraction, computePriceImpact, sortedInsert, validateAndParseAddress } from '@pulsex/sdk-core';
+export * from '@pulsex/sdk-core';
 import JSBI from 'jsbi';
 import invariant from 'tiny-invariant';
 import { keccak256, pack } from '@ethersproject/solidity';
