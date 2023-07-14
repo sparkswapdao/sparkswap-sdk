@@ -15,7 +15,7 @@
     "ethereum",
     "pulsechain"
   ],
-  "module": "dist/v2-sdk.esm.js",
+  "module": "dist/pulsex-sdk.esm.js",
   "scripts": {
     "lint": "tsdx lint src test",
     "build": "tsdx build",
