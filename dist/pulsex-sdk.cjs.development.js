@@ -166,7 +166,7 @@ function _toPropertyKey(arg) {
   return typeof key === "symbol" ? key : String(key);
 }
 
-var FACTORY_ADDRESS = '0x1715a3e4a142d8b698131108995174f37aeba10d';
+var FACTORY_ADDRESS = '0xEE31dc699ff37940E657F2C07A7D331Eba54A6d2';
 var WETH = {
   369: /*#__PURE__*/new sdkCore.Token(369, '0xa1077a294dde1b09bb078844df40758a5d0f9a27', 18, 'WPLS', 'Wrapped Pulse')
 };
@@ -175,7 +175,7 @@ var ETHER = /*#__PURE__*/_extends({}, /*#__PURE__*/sdkCore.Pulse.onChain(369), {
   chainId: 369,
   equals: /*#__PURE__*/sdkCore.Pulse.onChain(369).equals
 });
-var INIT_CODE_HASH = '0x59fffffddd756cba9095128e53f3291a6ba38b21e3df744936e7289326555d62';
+var INIT_CODE_HASH = '0x1d13db667562dd8d6e75796dcb1b654dd4aa9b64eb8152e2efae0fa4410fcc71';
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 // exports for internal consumption
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
