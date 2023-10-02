@@ -1,4 +1,5 @@
 import { BigintIsh, Price, Token, CurrencyAmount } from '@pulsex/sdk-core';
+import JSBI from 'jsbi';
 export declare const computePairAddress: ({ factoryAddress, tokenA, tokenB }: {
     factoryAddress: string;
     tokenA: Token;
@@ -7,8 +8,11 @@ export declare const computePairAddress: ({ factoryAddress, tokenA, tokenB }: {
 export declare class Pair {
     readonly liquidityToken: Token;
     private readonly tokenAmounts;
+    private readonly swapFee;
+    private readonly _swapFractionAfterFee;
+    private readonly _protocolFeeShare;
     static getAddress(tokenA: Token, tokenB: Token): string;
-    constructor(currencyAmountA: CurrencyAmount<Token>, tokenAmountB: CurrencyAmount<Token>);
+    constructor(currencyAmountA: CurrencyAmount<Token>, tokenAmountB: CurrencyAmount<Token>, swapFee: JSBI, protocolFeeShare: JSBI);
     /**
      * Returns true if the token is either token0 or token1
      * @param token to check
@@ -35,6 +39,8 @@ export declare class Pair {
     get token1(): Token;
     get reserve0(): CurrencyAmount<Token>;
     get reserve1(): CurrencyAmount<Token>;
+    get swapFractionAfterFee(): JSBI;
+    get protocolFeeShare(): JSBI;
     reserveOf(token: Token): CurrencyAmount<Token>;
     getOutputAmount(inputAmount: CurrencyAmount<Token>): [CurrencyAmount<Token>, Pair];
     getInputAmount(outputAmount: CurrencyAmount<Token>): [CurrencyAmount<Token>, Pair];
