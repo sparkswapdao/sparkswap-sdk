@@ -9,8 +9,6 @@ import {
   INIT_CODE_HASH,
   MINIMUM_LIQUIDITY,
   FIVE,
-  _997,
-  _1000,
   ONE,
   ZERO,
   FEES_DENOMINATOR
