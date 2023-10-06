@@ -162,7 +162,7 @@ function _toPropertyKey(arg) {
   return typeof key === "symbol" ? key : String(key);
 }
 
-var FACTORY_ADDRESS = '0xb04E223F1A01F42be869395a7bdaBa07c175EfCc';
+var FACTORY_ADDRESS = '0xEE31dc699ff37940E657F2C07A7D331Eba54A6d2';
 var WETH = {
   369: /*#__PURE__*/new Token(369, '0xa1077a294dde1b09bb078844df40758a5d0f9a27', 18, 'WPLS', 'Wrapped Pulse')
 };
@@ -171,14 +171,13 @@ var ETHER = /*#__PURE__*/_extends({}, /*#__PURE__*/Pulse.onChain(369), {
   chainId: 369,
   equals: /*#__PURE__*/Pulse.onChain(369).equals
 });
-var INIT_CODE_HASH = '0x0eeb74fefe5667c2eef945c113bf051629ddee029deaf9a88556dceb240d07d9';
+var INIT_CODE_HASH = '0x1d13db667562dd8d6e75796dcb1b654dd4aa9b64eb8152e2efae0fa4410fcc71';
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 // exports for internal consumption
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
 var ONE = /*#__PURE__*/JSBI.BigInt(1);
 var FIVE = /*#__PURE__*/JSBI.BigInt(5);
-var _997 = /*#__PURE__*/JSBI.BigInt(997);
-var _1000 = /*#__PURE__*/JSBI.BigInt(1000);
+var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
 
 // see https://stackoverflow.com/a/41102306
 var CAN_SET_PROTOTYPE = ('setPrototypeOf' in Object);
@@ -225,10 +224,13 @@ var computePairAddress = function computePairAddress(_ref) {
   return getCreate2Address(factoryAddress, keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASH);
 };
 var Pair = /*#__PURE__*/function () {
-  function Pair(currencyAmountA, tokenAmountB) {
+  function Pair(currencyAmountA, tokenAmountB, swapFee, protocolFeeShare) {
     var tokenAmounts = currencyAmountA.currency.sortsBefore(tokenAmountB.currency) // does safety checks
     ? [currencyAmountA, tokenAmountB] : [tokenAmountB, currencyAmountA];
     this.liquidityToken = new Token(tokenAmounts[0].currency.chainId, Pair.getAddress(tokenAmounts[0].currency, tokenAmounts[1].currency), 18, 'PLSX', 'PulseX');
+    this._swapFractionAfterFee = JSBI.subtract(FEES_DENOMINATOR, swapFee);
+    this._protocolFeeShare = protocolFeeShare;
+    this.swapFee = swapFee;
     this.tokenAmounts = tokenAmounts;
   }
   Pair.getAddress = function getAddress(tokenA, tokenB) {
@@ -271,14 +273,14 @@ var Pair = /*#__PURE__*/function () {
     }
     var inputReserve = this.reserveOf(inputAmount.currency);
     var outputReserve = this.reserveOf(inputAmount.currency.equals(this.token0) ? this.token1 : this.token0);
-    var inputAmountWithFee = JSBI.multiply(inputAmount.quotient, _997);
+    var inputAmountWithFee = JSBI.multiply(inputAmount.quotient, this._swapFractionAfterFee);
     var numerator = JSBI.multiply(inputAmountWithFee, outputReserve.quotient);
-    var denominator = JSBI.add(JSBI.multiply(inputReserve.quotient, _1000), inputAmountWithFee);
+    var denominator = JSBI.add(JSBI.multiply(inputReserve.quotient, FEES_DENOMINATOR), inputAmountWithFee);
     var outputAmount = CurrencyAmount.fromRawAmount(inputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI.divide(numerator, denominator));
     if (JSBI.equal(outputAmount.quotient, ZERO)) {
       throw new InsufficientInputAmountError();
     }
-    return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
+    return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount), this.swapFee, this.protocolFeeShare)];
   };
   _proto.getInputAmount = function getInputAmount(outputAmount) {
     !this.involvesToken(outputAmount.currency) ? process.env.NODE_ENV !== "production" ? invariant(false, 'TOKEN') : invariant(false) : void 0;
@@ -287,10 +289,10 @@ var Pair = /*#__PURE__*/function () {
     }
     var outputReserve = this.reserveOf(outputAmount.currency);
     var inputReserve = this.reserveOf(outputAmount.currency.equals(this.token0) ? this.token1 : this.token0);
-    var numerator = JSBI.multiply(JSBI.multiply(inputReserve.quotient, outputAmount.quotient), _1000);
-    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.quotient, outputAmount.quotient), _997);
+    var numerator = JSBI.multiply(JSBI.multiply(inputReserve.quotient, outputAmount.quotient), FEES_DENOMINATOR);
+    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.quotient, outputAmount.quotient), this._swapFractionAfterFee);
     var inputAmount = CurrencyAmount.fromRawAmount(outputAmount.currency.equals(this.token0) ? this.token1 : this.token0, JSBI.add(JSBI.divide(numerator, denominator), ONE));
-    return [inputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
+    return [inputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount), this.swapFee, this.protocolFeeShare)];
   };
   _proto.getLiquidityMinted = function getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB) {
     !totalSupply.currency.equals(this.liquidityToken) ? process.env.NODE_ENV !== "production" ? invariant(false, 'LIQUIDITY') : invariant(false) : void 0;
@@ -380,6 +382,16 @@ var Pair = /*#__PURE__*/function () {
     key: "reserve1",
     get: function get() {
       return this.tokenAmounts[1];
+    }
+  }, {
+    key: "swapFractionAfterFee",
+    get: function get() {
+      return this._swapFractionAfterFee;
+    }
+  }, {
+    key: "protocolFeeShare",
+    get: function get() {
+      return this._protocolFeeShare;
     }
   }]);
   return Pair;
